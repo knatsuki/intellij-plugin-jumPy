@@ -1,18 +1,17 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.knatsuki.intellipluginjumpy</id>
-    <name>intelli-plugin-jumPy</name>
-    <vendor>knatsuki</vendor>
+    <id>org.mukatalab.jumpy</id>
+    <name>JumPy</name>
+    <vendor email="kuni.natsuki@gmail.com">MukataLab</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.knatsuki.intellipluginjumpy.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.knatsuki.intellipluginjumpy.services.MyProjectService"/>
-    </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.knatsuki.intellipluginjumpy.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceImplementation="com.mukatalab.jumpy.services.JumpyService"/>
+    </extensions>
+    <actions>
+        <group id="com.mukatalab.jumpy.actions.JumpToActionGroup" class="com.mukatalab.jumpy.actions.JumpToActionGroup"
+               text="Jump To..."/>
+    </actions>
 </idea-plugin>
