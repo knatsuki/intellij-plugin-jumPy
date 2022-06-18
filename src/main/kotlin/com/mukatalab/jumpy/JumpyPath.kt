@@ -4,6 +4,9 @@ package com.mukatalab.jumpy
 data class JumpyPath(val locations: List<String> = listOf()) {
     constructor(path: String) : this(parsePath(path))
 
+    val path: String
+        get() = locations.joinToString("/")
+
     /**
      * Subtract to produce a relative path sequence.
      *

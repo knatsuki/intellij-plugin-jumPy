@@ -1,15 +1,16 @@
 package com.mukatalab.jumpy.services
 
-import com.intellij.openapi.components.PersistentStateComponent
-import com.intellij.openapi.components.State
-import com.intellij.openapi.components.Storage
-import com.intellij.openapi.components.service
+import com.intellij.openapi.components.*
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.vfs.VirtualFile
 import com.mukatalab.jumpy.JumpyPath
 import com.mukatalab.jumpy.JumpyTestSrcRoot
 
-@State(name = "com.mukatalab.jumpy.settings.JumpyService", storages = [Storage("JumpyProjectConfiguration.xml")])
+@State(
+    name = "com.mukatalab.jumpy.services.JumpyService",
+    storages = [Storage("JumpyProjectConfiguration.xml")]
+)
 class JumpyService(val project: Project) : PersistentStateComponent<JumpyServiceState> {
     private var _state = JumpyServiceState()
 
@@ -17,17 +18,22 @@ class JumpyService(val project: Project) : PersistentStateComponent<JumpyService
         return _state
     }
 
+    fun setState(state: JumpyServiceState) {
+        _state = state
+    }
+
     override fun loadState(state: JumpyServiceState) {
         _state = state
     }
+
 
     /**
      * @param pyPath: Content-root relative path sequence
      */
     fun buildSearchablePyPath(pyPath: JumpyPath): JumpyPath {
         for (testRoot in _state.testSrcRoots) {
-            if (pyPath.hasParent(testRoot.pathSequence ?: continue)) {
-                return pyPath - testRoot.pathSequence
+            if (pyPath.hasParent(testRoot.jumpyPath)) {
+                return pyPath - testRoot.jumpyPath
             }
         }
 
@@ -54,7 +60,7 @@ class JumpyService(val project: Project) : PersistentStateComponent<JumpyService
                 currentNode = nextNode
             }
         } else {
-            locationsLeft.addAll(testSrcRoot.pathSequence!!.locations.asReversed())
+            locationsLeft.addAll(testSrcRoot.jumpyPath.locations.asReversed())
         }
 
 //        Traverse down
@@ -81,6 +87,36 @@ class JumpyService(val project: Project) : PersistentStateComponent<JumpyService
             return currentNode
         }
         return currentNode
+    }
+
+    /**
+     * Try to guess the test src roots
+     */
+    fun guessTestSrcRoots(): MutableList<JumpyTestSrcRoot> {
+        val testSrcRoots = mutableListOf<JumpyTestSrcRoot>()
+        val projectRoot = project.guessProjectDir() ?: return testSrcRoots
+
+        val testDirChild = projectRoot.findChild("tests") ?: projectRoot.findChild("test") ?: return testSrcRoots
+        testDirChild.children.forEach {
+            when (it.name) {
+                "unit", "functional", "integration" -> testSrcRoots.add(
+                    JumpyTestSrcRoot(
+                        "${it.parent.name}/${it.name}",
+                        "${it.name.replaceFirstChar { char -> char.uppercase() }} Test"
+                    )
+                )
+            }
+        }
+
+        if (testSrcRoots.isEmpty()) {
+            testSrcRoots.add(
+                JumpyTestSrcRoot(
+                    testDirChild.name,
+                    testDirChild.name.replaceFirstChar { char -> char.uppercase() })
+            )
+        }
+
+        return testSrcRoots
     }
 
     companion object {

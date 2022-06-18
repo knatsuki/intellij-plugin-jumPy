@@ -9,9 +9,14 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.mukatalab.jumpy.services.JumpyService"/>
+        <projectConfigurable
+                parentId="tools"
+                instance="com.mukatalab.jumpy.settings.JumpyProjectSettingsConfigurable"
+                id="com.mukatalab.jumpy.settings.JumpyProjectSettingsConfigurable"/>
+        <postStartupActivity implementation="com.mukatalab.jumpy.listeners.JumpyInitialization"/>
     </extensions>
     <actions>
-        <group id="com.mukatalab.jumpy.actions.JumpToActionGroup" class="com.mukatalab.jumpy.actions.JumpToActionGroup"
+        <group id="jumpy.JumpToActionGroup" class="com.mukatalab.jumpy.actions.JumpToActionGroup"
                text="Jump To..."/>
     </actions>
 </idea-plugin>

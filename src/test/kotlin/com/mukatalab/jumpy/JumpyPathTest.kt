@@ -9,6 +9,12 @@ import kotlin.test.assertFailsWith
 internal class JumpyPathTest {
 
     @Test
+    fun testGetPath() {
+        val subject = JumpyPath(listOf("path", "to", "somewhere", "blue"))
+        assertEquals(subject.path, "path/to/somewhere/blue")
+    }
+
+    @Test
     fun testMinus() {
         val subject = JumpyPath(listOf("path", "that", "matches", "and", "more")) - JumpyPath(
             listOf(
@@ -40,6 +46,7 @@ internal class JumpyPathTest {
 
         assertEquals(subject.locations, listOf("a", "b", "c", "d", "e"))
     }
+
 
     @Nested
     inner class ConstructFromPathStr {

@@ -2,4 +2,7 @@ package com.mukatalab.jumpy.services
 
 import com.mukatalab.jumpy.JumpyTestSrcRoot
 
-data class JumpyServiceState(val testSrcRoots: List<JumpyTestSrcRoot> = listOf())
+/**
+ * Note to self: Setter must be present for all properties in data class (i.e., no val properties)
+ */
+data class JumpyServiceState(var testSrcRoots: MutableList<JumpyTestSrcRoot> = mutableListOf())

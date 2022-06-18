@@ -8,7 +8,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.NlsActions
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.mukatalab.jumpy.JumpyPath
 import com.mukatalab.jumpy.JumpyTestSrcRoot
@@ -23,7 +22,6 @@ class JumpToAction(
 ) : AnAction(text, description, icon) {
     override fun actionPerformed(e: AnActionEvent) {
         val project: Project = e.project ?: return
-        val psiEl: PsiElement = e.getData(CommonDataKeys.PSI_ELEMENT) ?: return
         val psiFile: PsiFile = e.getData(CommonDataKeys.PSI_FILE) ?: return
 
 
