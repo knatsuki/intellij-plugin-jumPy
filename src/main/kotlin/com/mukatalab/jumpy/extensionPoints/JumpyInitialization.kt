@@ -1,4 +1,4 @@
-package com.mukatalab.jumpy.listeners
+package com.mukatalab.jumpy.extensionPoints
 
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.project.DumbAware

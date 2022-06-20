@@ -13,7 +13,7 @@
                 parentId="tools"
                 instance="com.mukatalab.jumpy.settings.JumpyProjectSettingsConfigurable"
                 id="com.mukatalab.jumpy.settings.JumpyProjectSettingsConfigurable"/>
-        <postStartupActivity implementation="com.mukatalab.jumpy.listeners.JumpyInitialization"/>
+        <postStartupActivity implementation="com.mukatalab.jumpy.extensionPoints.JumpyInitialization"/>
     </extensions>
     <actions>
         <group id="jumpy.JumpToActionGroup" class="com.mukatalab.jumpy.actions.JumpToActionGroup"
